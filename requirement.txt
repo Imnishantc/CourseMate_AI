@@ -1,0 +1,59 @@
+langchain
+langchain-core
+langchain-community
+langchain-openai
+langchain-mistralai
+
+# OpenAI
+openai
+
+# Mistral AI
+mistralai
+
+# Embeddings
+sentence-transformers
+tiktoken
+
+# Vector stores
+faiss-cpu
+chromadb
+
+# Environment variables
+python-dotenv
+
+# Document loaders / parsing
+pypdf
+pdfplumber
+unstructured
+beautifulsoup4
+lxml
+
+# Text processing
+nltk
+spacy
+
+# Tokenizers
+transformers
+
+# API / backend (optional but useful)
+fastapi
+uvicorn
+
+# Data handling
+pandas
+numpy
+
+# Utilities
+requests
+tqdm
+
+# Optional UI (if chatbot UI)
+streamlit
+gradio
+
+# Optional logging
+loguru
+
+# Optional evaluation
+ragas
+datasets

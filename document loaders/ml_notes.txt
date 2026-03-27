@@ -1,0 +1,174 @@
+MACHINE LEARNING NOTES
+======================
+
+1. What is Machine Learning?
+Machine Learning is a branch of Artificial Intelligence that allows computers
+to learn from data without being explicitly programmed.
+
+It uses algorithms to find patterns in data and make predictions or decisions.
+
+Example:
+- Spam detection
+- Face recognition
+- Recommendation systems
+- Chatbots
+
+
+2. Types of Machine Learning
+----------------------------
+
+A) Supervised Learning
+In supervised learning, the model learns from labeled data.
+
+Input -> Output is known
+
+Examples:
+- Classification
+- Regression
+
+Algorithms:
+- Linear Regression
+- Logistic Regression
+- Decision Tree
+- SVM
+- KNN
+- Random Forest
+
+Example:
+Predict house price using past data
+
+
+B) Unsupervised Learning
+Model learns from unlabeled data.
+
+No output labels are given.
+
+Algorithms:
+- K-Means clustering
+- Hierarchical clustering
+- DBSCAN
+- PCA
+
+Example:
+Customer segmentation
+
+
+C) Reinforcement Learning
+Model learns by reward and punishment.
+
+Agent interacts with environment.
+
+Example:
+- Self driving car
+- Game playing AI
+- Robotics
+
+
+3. Important Terms
+------------------
+
+Dataset
+Collection of data used for training.
+
+Features
+Input variables.
+
+Label / Target
+Output variable.
+
+Training data
+Data used to train model.
+
+Testing data
+Data used to test model.
+
+Model
+Algorithm trained on data.
+
+Overfitting
+Model learns too much from training data.
+
+Underfitting
+Model does not learn enough.
+
+
+4. Machine Learning Workflow
+----------------------------
+
+1. Collect data
+2. Clean data
+3. Split data
+4. Train model
+5. Test model
+6. Evaluate model
+7. Deploy model
+
+
+5. Applications of Machine Learning
+-----------------------------------
+
+- Image recognition
+- Speech recognition
+- Chatbots
+- Fraud detection
+- Recommendation systems
+- Medical diagnosis
+- Self driving cars
+
+
+6. Difference between AI, ML, DL
+--------------------------------
+
+AI = Artificial Intelligence
+ML = Machine Learning (subset of AI)
+DL = Deep Learning (subset of ML)
+
+
+AI > ML > DL
+
+
+7. Popular ML Libraries in Python
+--------------------------------
+
+- numpy
+- pandas
+- matplotlib
+- scikit-learn
+- tensorflow
+- keras
+- pytorch
+
+
+8. Evaluation Metrics
+---------------------
+
+Accuracy
+Precision
+Recall
+F1 Score
+Confusion Matrix
+MAE
+MSE
+RMSE
+
+
+9. Overfitting vs Underfitting
+
+Overfitting:
+Model performs well on training but bad on test
+
+Underfitting:
+Model performs bad on both
+
+
+10. Real Life Examples
+
+Netflix recommendation
+Amazon recommendation
+Google search
+ChatGPT
+Face unlock
+Spam filter
+
+
+END OF NOTES
