@@ -9,7 +9,8 @@ The Gemini Developer API free tier has usage limits. Google states that free-tie
 - Upload one PDF at a time (up to 20 MB and 500 pages).
 - Retrieve relevant passages with maximal marginal relevance (MMR).
 - Generate answers with Gemini using the retrieved document context.
-- Keep each Streamlit session's document in a separate Chroma collection.
+- Keep a reusable local Chroma collection for each PDF, identified by its content.
+- Save conversations locally in SQLite and show recent chats in the sidebar.
 - Show source filenames and page numbers with answers.
 - Report PDF processing and model errors without crashing the app.
 
@@ -38,7 +39,7 @@ CourseMate_AI/
 └── .github/workflows/      # CI checks
 ```
 
-The Chroma database is created locally in `chroma_db/` when you process a PDF. It is runtime data and is excluded from Git. Temporary uploaded PDFs are removed after processing.
+The Chroma database is created locally in `chroma_db/` when you process a PDF. It is runtime data and is excluded from Git. Temporary uploaded PDFs are removed after processing. Chat history is stored outside the repository under `%LOCALAPPDATA%\\CourseMateAI\\history.sqlite3` on Windows or `~/.local/share/coursemate-ai/history.sqlite3` on macOS/Linux. It stays on that computer.
 
 ## Run locally
 
