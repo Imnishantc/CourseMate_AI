@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "codex/**"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            pyproject.toml
+            uv.lock
+      - name: Install locked dependencies
+        run: uv sync --locked --python 3.12
+      - name: Run unit tests
+        run: uv run --locked python -m unittest discover -s tests -v
+      - name: Compile application modules
+        run: uv run --locked python -m compileall -q app.py create_database.py main.py

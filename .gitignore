@@ -205,3 +205,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Local CourseMate runtime data
+/chroma_db/
+/temp*.pdf

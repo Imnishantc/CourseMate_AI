@@ -1,176 +1,76 @@
-# CourseMate_AI
+# CourseMate AI
 
-An AI-powered academic assistant built using Retrieval-Augmented Generation (RAG), Large Language Models (LLMs), and Vector Databases to help students interact with course materials through natural language queries.
+CourseMate AI is a Streamlit prototype for asking questions about an uploaded course PDF. It extracts PDF text, splits it into chunks, embeds the chunks with Mistral, stores them in Chroma, and uses retrieval-augmented generation (RAG) to answer questions from the selected document.
 
-The system processes academic PDFs, generates vector embeddings, retrieves relevant content using semantic search, and produces context-aware responses using the Mistral LLM.
+## Features
 
+- Upload one PDF at a time (up to 20 MB and 500 pages).
+- Retrieve relevant passages with maximal marginal relevance (MMR).
+- Generate answers with Mistral using the retrieved document context.
+- Keep each Streamlit session's document in a separate Chroma collection.
+- Show source filenames and page numbers with answers.
+- Report PDF processing and model errors without crashing the app.
 
-##  Features
+## Technology
 
-- 📄 PDF document ingestion and processing
-- 🔍 Semantic search using vector embeddings
-- 🤖 AI-powered question answering
-- 🧠 Retrieval-Augmented Generation (RAG) architecture
-- ⚡ Fast document retrieval with ChromaDB
-- 🔐 Secure API key management using environment variables
-- 📚 Context-aware responses grounded in course materials
+- Python and Streamlit
+- LangChain Core and standalone integration packages
+- Mistral embeddings and chat model
+- ChromaDB
+- PyPDF
 
-
-
-##  Architecture
+## Project structure
 
 ```text
-PDF Documents
-      │
-      ▼
-Document Loader
-      │
-      ▼
-Text Chunking
-      │
-      ▼
-Embedding Generation
-      │
-      ▼
-Chroma Vector Database
-      │
-      ▼
-Semantic Retrieval
-      │
-      ▼
-Mistral LLM
-      │
-      ▼
-Generated Response
-```
-
-
-##  Tech Stack
-
-| Programming Language | Python |
-| LLM | Mistral AI |
-| Framework | LangChain |
-| Vector Database | ChromaDB |
-| AI Concepts | RAG, Embeddings, Semantic Search |
-| Environment Management | Python Dotenv |
-
-
-
-##  Project Structure
-
-```bash
 CourseMate_AI/
-│
-├── chroma_db/              # Persistent vector database
-├── document_loaders/       # PDF loading and preprocessing
-├── vector_stores/          # Vector store operations
-│
-├── app.py                  # Application interface
-├── main.py                 # Core RAG pipeline
-├── create_database.py      # Embedding and database creation
-├── temp.pdf                # Sample academic document
-├── requirement.txt         # Project dependencies
-├── .env                    # Environment variables
-└── README.md
+├── app.py                  # Streamlit application
+├── create_database.py      # PDF ingestion and vector-store creation
+├── main.py                 # Command-line RAG client
+├── requirement.txt         # Direct dependency pins for pip
+├── pyproject.toml          # Project dependencies for uv
+├── uv.lock                 # Resolved transitive dependency lock
+├── .env.example            # Environment variable template
+├── document loaders/       # Loader experiments and small text notes
+├── vector stores/          # Vector-store experiment
+├── tests/                  # Unit tests
+└── .github/workflows/      # CI checks
 ```
 
-##  Installation
+The Chroma database is created locally in `chroma_db/` when you process a PDF. It is runtime data and is excluded from Git. Temporary uploaded PDFs are removed after processing.
 
-### Clone the Repository
+## Run locally
+
+1. Install Python 3.10 or newer and [uv](https://docs.astral.sh/uv/).
+
+2. Install the exact locked environment.
+
+   ```bash
+   uv sync --locked
+   ```
+
+3. Copy `.env.example` to `.env` and set your Mistral API key. Keep `.env` local; it must not be committed.
+
+4. Start the app.
+
+   ```bash
+   uv run streamlit run app.py
+   ```
+
+5. Upload a PDF, choose **Process PDF**, then ask questions about that processed document.
+
+The command-line client can ingest and query one PDF:
 
 ```bash
-git clone https://github.com/yourusername/CourseMate_AI.git
-cd CourseMate_AI
+uv run python main.py path/to/course.pdf
 ```
 
-### Create Virtual Environment
+## Current limitations
 
-```bash
-python -m venv venv
-```
+- The app processes one selected PDF per Streamlit session.
+- Chroma data is stored on the local filesystem; multi-instance deployment needs shared, access-controlled storage.
+- Streamlit session isolation is not a substitute for user authentication or tenant authorization.
+- The app has no account system, quotas, or document-retention policy.
 
-Activate the environment:
+## Project status
 
-**Windows**
-
-```bash
-venv\Scripts\activate
-```
-
-**Linux/macOS**
-
-```bash
-source venv/bin/activate
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirement.txt
-```
-
-### Configure Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-MISTRAL_API_KEY=your_api_key_here
-```
-
-### Generate Vector Database
-
-```bash
-python create_database.py
-```
-
-### Run the Application
-
-```bash
-python app.py
-```
-
-
-
-##  Workflow
-
-1. Load academic PDF documents.
-2. Extract and split text into manageable chunks.
-3. Generate vector embeddings for each chunk.
-4. Store embeddings in ChromaDB.
-5. Accept user queries in natural language.
-6. Retrieve the most relevant document context.
-7. Augment prompts with retrieved information.
-8. Generate accurate responses using Mistral AI.
-
-
-
-##  Skills Demonstrated
-
-- Machine Learning Fundamentals
-- Large Language Models (LLMs)
-- Retrieval-Augmented Generation (RAG)
-- Vector Databases
-- Embedding-Based Search
-- Semantic Retrieval
-- Prompt Engineering
-- API Integration
-- Information Retrieval Systems
-- End-to-End AI Application Development
-
-
-
-##  Future Enhancements
-
-- Multi-document support
-- Conversational memory
-- AI agents for academic assistance
-- Response evaluation framework
-- Voice-based interaction
-- Multi-language support
-- Cloud deployment
-
-
-## ⭐ Acknowledgements
-
-This project was developed to explore modern Generative AI techniques and demonstrate practical implementation of Retrieval-Augmented Generation (RAG), Vector Search, and LLM-powered question-answering systems for educational applications.
-
+This is a learning project and prototype. Unit tests, CI, direct dependency pins, and a transitive lockfile are included. Production deployment still needs authentication, shared access-controlled storage, retention controls, and deployment monitoring.
