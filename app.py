@@ -9,7 +9,10 @@ from dotenv import load_dotenv
 from create_database import create_vectorstore, document_collection_name
 from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_mistralai import ChatMistralAI, MistralAIEmbeddings
+from langchain_google_genai import (
+    ChatGoogleGenerativeAI,
+    GoogleGenerativeAIEmbeddings,
+)
 
 MAX_UPLOAD_SIZE_MB = 20
 MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB * 1024 * 1024
@@ -64,7 +67,7 @@ if uploaded_file is not None:
 
 @st.cache_resource
 def load_vectorstore(collection_name):
-    embedding_model = MistralAIEmbeddings(model="mistral-embed")
+    embedding_model = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2")
     return Chroma(
         collection_name=collection_name,
         persist_directory="chroma_db",
@@ -83,7 +86,7 @@ if has_active_document:
         search_type="mmr",
         search_kwargs={"k": 4, "fetch_k": 10, "lambda_mult": 0.5},
     )
-    llm = ChatMistralAI(model="mistral-small-latest")
+    llm = ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite")
     prompt = ChatPromptTemplate.from_messages(
         [
             (

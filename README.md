@@ -1,12 +1,14 @@
 # CourseMate AI
 
-CourseMate AI is a Streamlit prototype for asking questions about an uploaded course PDF. It extracts PDF text, splits it into chunks, embeds the chunks with Mistral, stores them in Chroma, and uses retrieval-augmented generation (RAG) to answer questions from the selected document.
+CourseMate AI is a Streamlit prototype for asking questions about an uploaded course PDF. It extracts PDF text, splits it into chunks, embeds the chunks with Gemini, stores them in Chroma, and uses retrieval-augmented generation (RAG) to answer questions from the selected document.
+
+The Gemini Developer API free tier has usage limits. Google states that free-tier inputs may be used to improve its products, so avoid uploading sensitive or confidential course documents.
 
 ## Features
 
 - Upload one PDF at a time (up to 20 MB and 500 pages).
 - Retrieve relevant passages with maximal marginal relevance (MMR).
-- Generate answers with Mistral using the retrieved document context.
+- Generate answers with Gemini using the retrieved document context.
 - Keep each Streamlit session's document in a separate Chroma collection.
 - Show source filenames and page numbers with answers.
 - Report PDF processing and model errors without crashing the app.
@@ -15,7 +17,7 @@ CourseMate AI is a Streamlit prototype for asking questions about an uploaded co
 
 - Python and Streamlit
 - LangChain Core and standalone integration packages
-- Mistral embeddings and chat model
+- Gemini embeddings and chat model
 - ChromaDB
 - PyPDF
 
@@ -48,7 +50,7 @@ The Chroma database is created locally in `chroma_db/` when you process a PDF. I
    uv sync --locked
    ```
 
-3. Copy `.env.example` to `.env` and set your Mistral API key. Keep `.env` local; it must not be committed.
+3. Copy `.env.example` to `.env` and set your Google AI Studio API key (`GOOGLE_API_KEY`). Keep `.env` local; it must not be committed.
 
 4. Start the app.
 

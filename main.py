@@ -6,7 +6,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_mistralai import ChatMistralAI, MistralAIEmbeddings
+from langchain_google_genai import (
+    ChatGoogleGenerativeAI,
+    GoogleGenerativeAIEmbeddings,
+)
 
 from create_database import create_vectorstore, document_collection_name
 
@@ -24,7 +27,7 @@ def main():
     collection_name = document_collection_name(uuid.uuid4().hex, content_digest)
     create_vectorstore(str(pdf_path), collection_name, pdf_path.name)
 
-    embeddings = MistralAIEmbeddings(model="mistral-embed")
+    embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2")
     vectorstore = Chroma(
         collection_name=collection_name,
         persist_directory="chroma_db",
@@ -34,7 +37,7 @@ def main():
         search_type="mmr",
         search_kwargs={"k": 4, "fetch_k": 10, "lambda_mult": 0.5},
     )
-    llm = ChatMistralAI(model="mistral-large-2512")
+    llm = ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite")
     prompt = ChatPromptTemplate.from_messages(
         [
             (

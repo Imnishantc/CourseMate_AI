@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_mistralai import MistralAIEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
 
@@ -50,7 +50,7 @@ def create_vectorstore(file_path, collection_name, source_name=None):
     if not chunks:
         raise ValueError("This PDF contains no extractable text.")
 
-    embedding_model = MistralAIEmbeddings(model="mistral-embed")
+    embedding_model = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2")
     chunk_ids = [
         hashlib.sha256(
             f"{collection_name}:{index}:{chunk.page_content}".encode("utf-8")

@@ -21,7 +21,7 @@ class CreateDatabaseTests(unittest.TestCase):
         self.assertNotEqual(first, another_document)
 
     @patch("create_database.Chroma.from_documents")
-    @patch("create_database.MistralAIEmbeddings")
+    @patch("create_database.GoogleGenerativeAIEmbeddings")
     @patch("create_database.RecursiveCharacterTextSplitter")
     @patch("create_database.PdfReader")
     def test_ingestion_sets_source_and_collection(
@@ -53,7 +53,7 @@ class CreateDatabaseTests(unittest.TestCase):
         self.assertEqual(kwargs["embedding"], embedding)
         self.assertEqual(len(kwargs["ids"]), 1)
 
-    @patch("create_database.MistralAIEmbeddings")
+    @patch("create_database.GoogleGenerativeAIEmbeddings")
     @patch("create_database.PdfReader")
     def test_rejects_pdf_without_extractable_text(self, reader_factory, embeddings):
         page = MagicMock()
@@ -67,7 +67,7 @@ class CreateDatabaseTests(unittest.TestCase):
 
         embeddings.assert_not_called()
 
-    @patch("create_database.MistralAIEmbeddings")
+    @patch("create_database.GoogleGenerativeAIEmbeddings")
     @patch("create_database.PdfReader")
     def test_rejects_pdf_over_page_limit_before_embedding(
         self, reader_factory, embeddings
