@@ -17,6 +17,35 @@ from langchain_google_genai import (
 MAX_UPLOAD_SIZE_MB = 20
 MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB * 1024 * 1024
 
+def extract_response_text(content):
+    """Return readable text from Gemini's structured content blocks."""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        text_blocks = []
+        for block in content:
+            if isinstance(block, str):
+                text_blocks.append(block)
+            elif isinstance(block, dict) and isinstance(block.get("text"), str):
+                text_blocks.append(block["text"])
+        return "\n".join(text_blocks)
+    return str(content)
+
+
+def format_retrieved_context(docs, fallback_name):
+    """Add page provenance to retrieved text and collect unique citations."""
+    context_parts = []
+    sources = []
+    for doc in docs:
+        page = doc.metadata.get("page")
+        page_label = str(page + 1) if isinstance(page, int) else "unknown"
+        source = f"{doc.metadata.get('source', fallback_name)}, page {page_label}"
+        if source not in sources:
+            sources.append(source)
+        context_parts.append(f"[Source: {source}]\n{doc.page_content}")
+    return "\n\n".join(context_parts), sources
+
+
 load_dotenv()
 
 st.set_page_config(page_title="CourseMate AI", layout="wide")
@@ -119,11 +148,17 @@ Question:
     if query:
         try:
             docs = retriever.invoke(query)
-            context = "\n\n".join(doc.page_content for doc in docs)
-            final_prompt = prompt.invoke({"context": context, "question": query})
-            response = llm.invoke(final_prompt)
+            context, sources = format_retrieved_context(docs, uploaded_file.name)
+            if docs:
+                final_prompt = prompt.invoke({"context": context, "question": query})
+                response = llm.invoke(final_prompt)
+                answer = extract_response_text(response.content)
+            else:
+                answer = "I could not find the answer in the document."
             st.session_state.chat_history.append(("You", query))
-            st.session_state.chat_history.append(("AI", response.content))
+            st.session_state.chat_history.append(("AI", answer))
+            if sources:
+                st.session_state.chat_history.append(("Sources", sources))
         except Exception:
             logging.exception("Question answering failed")
             st.error("Could not answer right now. Please try again.")
@@ -134,6 +169,6 @@ Question:
         elif role == "AI":
             st.markdown(f"**🤖 AI:** {message}")
         else:
-            st.text("Sources: " + "; ".join(message))
+            st.caption("Sources: " + "; ".join(message))
 elif uploaded_file is not None and uploaded_digest is not None:
     st.info("Process this PDF before asking questions.")
