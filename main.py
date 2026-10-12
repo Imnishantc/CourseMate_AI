@@ -14,6 +14,21 @@ from langchain_google_genai import (
 from create_database import create_vectorstore, document_collection_name
 
 
+def extract_response_text(content):
+    """Return readable text from Gemini's structured content blocks."""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        text_blocks = []
+        for block in content:
+            if isinstance(block, str):
+                text_blocks.append(block)
+            elif isinstance(block, dict) and isinstance(block.get("text"), str):
+                text_blocks.append(block["text"])
+        return "\n".join(text_blocks)
+    return str(content)
+
+
 def main():
     if len(sys.argv) != 2:
         raise SystemExit("Usage: python main.py <path-to-pdf>")
@@ -74,7 +89,7 @@ the answer, say: "I could not find the answer in the document."
                 {"context": "\n\n".join(context_parts), "question": query}
             )
         )
-        print(f"\nAI: {response.content}")
+        print(f"\nAI: {extract_response_text(response.content)}")
         if sources:
             print("Sources: " + "; ".join(sources))
         print()
