@@ -83,7 +83,7 @@ if has_active_document:
         search_type="mmr",
         search_kwargs={"k": 4, "fetch_k": 10, "lambda_mult": 0.5},
     )
-    llm = ChatMistralAI(model="mistral-large-2512")
+    llm = ChatMistralAI(model="mistral-small-latest")
     prompt = ChatPromptTemplate.from_messages(
         [
             (
